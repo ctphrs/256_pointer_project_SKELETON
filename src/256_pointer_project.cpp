@@ -26,9 +26,13 @@ int main( int argc, char *argv[] )  {
 	   return FAIL_WRONG_NUMBER_ARGS;
 	}
 
+	string infile = argv[1];
+	string total_memory_str = argv[2];
+	string outfile = argv[3];
+
 	//TODO get the total memory passed in for use, stoi may come in handy
 	//but its delicate because it expects the string to hold only numbers
-	int total_memory;
+	int total_memory = stoi(total_memory_str);
 
 	//test the memorymanager
 	run_all_tests(argv,total_memory);
