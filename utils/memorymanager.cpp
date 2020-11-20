@@ -5,14 +5,13 @@
  *      Author: keith
  */
 
-//TODO organize includes
 #include "../includes/constants.h"
 #include "../includes/memorymanager.h"
 #include "../includes/utilities.h"
 /**
  * this will hold the list of structs
  */
-data *list_data = 0;
+struct data *list_data = 0;
 int total_allocated = 0;
 /**
  * create a linked list of  structs.
@@ -36,6 +35,7 @@ int create_list(int total_memory){
 	}
 	list_data = new data;
 	data *pinter = list_data;
+	total_allocated++;
 	for(int i=1;i<max_num_structs;i++){
 		struct data *new_data = (struct data*) malloc(sizeof(struct data));
 		pinter -> p_next = new_data;
