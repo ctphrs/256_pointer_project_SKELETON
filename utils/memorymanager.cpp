@@ -12,7 +12,7 @@
 /**
  * this will hold the list of structs
  */
-data *list_data=0;
+data *list_data = 0;
 int total_allocated = 0;
 /**
  * create a linked list of  structs.
@@ -27,22 +27,22 @@ int total_allocated = 0;
  * 		   						  total_allocated instead of list_data==0?)
  */
 int create_list(int total_memory){
-if(total_allocated>0){
-	return MEM_ALREADY_ALLOCATED;
-}
-destroy_list();
-int max_num_structs = how_many_structs_can_fit_in_memory(total_memory);
-if(max_num_structs == 0){
-	return 0;
-}
-data *head = list_data;
-for(int i=0;i<max_num_structs;i++){
-	struct data* new_node = (struct data*) malloc(sizeof(struct data));
-	new_node -> p_next = head;
-	head = new_node;
-	total_allocated++;
+	if(total_allocated>0){
+		return MEM_ALREADY_ALLOCATED;
 	}
-return total_allocated;
+	int max_num_structs = how_many_structs_can_fit_in_memory(total_memory);
+	if(max_num_structs == 0){
+		return 0;
+	}
+	list_data = new data;
+	data *pinter = list_data;
+	for(int i=1;i<max_num_structs;i++){
+		struct data *new_data = (struct data*) malloc(sizeof(struct data));
+		pinter -> p_next = new_data;
+		pinter = new_data;
+		total_allocated++;
+	}
+	return total_allocated;
 
 }
 
@@ -54,11 +54,25 @@ return total_allocated;
  *         NO_STRUCTS_TO_DEALLOCATE if no memory allocated
  */
 int destroy_list(){
-data *pinter = list_data;
-
-while(pinter!=0){
-
+	if(list_data == NULL){
+		return NO_STRUCTS_TO_DEALLOCATE;
+	}
+struct data *pinter = list_data;
+struct data *next = 0;
+while(!pinter){
+	next = pinter -> p_next;
+	if(next->p_next == 0){
+		delete next;
+		delete pinter;
+	}
+	else{
+		pinter->p_next = next->p_next;
+		delete next;
+	}
 }
+total_allocated = 0;
+list_data = NULL;
+return SUCCESS;
 }
 
 /**
@@ -67,7 +81,13 @@ while(pinter!=0){
  * \return number structs available
   */
 int numb_available_structs(){
-
+	int count = 0;
+	struct data *pinter = list_data;
+	while(pinter != NULL){
+		count++;
+		pinter = pinter -> p_next;
+	}
+	return count;
 }
 
 /**
