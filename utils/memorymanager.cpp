@@ -8,6 +8,7 @@
 //TODO organize includes
 #include "../includes/constants.h"
 #include "../includes/memorymanager.h"
+#include "../includes/utilities.h"
 /**
  * this will hold the list of structs
  */
@@ -26,6 +27,15 @@ data *list_data=0;
  * 		   						  total_allocated instead of list_data==0?)
  */
 int create_list(int total_memory){
+destroy_list();
+int num_structs = how_many_structs_can_fit_in_memory(total_memory);
+struct data* head = 0;
+for(int i=0;i<num_structs;i++){
+	struct data* new_node = (struct data*) malloc(sizeof(struct data));
+	new_node -> p_next = head;
+	head = new_node;
+	}
+return num_structs;
 
 }
 
@@ -37,6 +47,14 @@ int create_list(int total_memory){
  *         NO_STRUCTS_TO_DEALLOCATE if no memory allocated
  */
 int destroy_list(){
+	data *pnew = new data;
+	data *pstart=pnew;
+	pnew = pstart;
+	while(pstart){
+		pnew = (*pstart).p_next;
+		delete pstart;
+		pstart = pnew;
+	}
 
 }
 
@@ -57,5 +75,5 @@ int numb_available_structs(){
  *
  */
 data*  get_list(){
-
+return list_data;
 }
