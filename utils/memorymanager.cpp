@@ -35,10 +35,11 @@ int max_num_structs = how_many_structs_can_fit_in_memory(total_memory);
 if(max_num_structs == 0){
 	return 0;
 }
+data *head = list_data;
 for(int i=0;i<max_num_structs;i++){
 	struct data* new_node = (struct data*) malloc(sizeof(struct data));
-	new_node -> p_next = list_data;
-	list_data = new_node;
+	new_node -> p_next = head;
+	head = new_node;
 	total_allocated++;
 	}
 return total_allocated;
@@ -53,7 +54,11 @@ return total_allocated;
  *         NO_STRUCTS_TO_DEALLOCATE if no memory allocated
  */
 int destroy_list(){
-total_allocated = 0;
+data *pinter = list_data;
+
+while(pinter!=0){
+
+}
 }
 
 /**
