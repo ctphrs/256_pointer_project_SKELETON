@@ -13,7 +13,7 @@
  * this will hold the list of structs
  */
 data *list_data=0;
-
+int total_allocated = 0;
 /**
  * create a linked list of  structs.
  * NOTE: be sure you do not leak memory if you call this function twice!
@@ -27,15 +27,21 @@ data *list_data=0;
  * 		   						  total_allocated instead of list_data==0?)
  */
 int create_list(int total_memory){
+if(total_allocated>0){
+	return MEM_ALREADY_ALLOCATED;
+}
 destroy_list();
-int num_structs = how_many_structs_can_fit_in_memory(total_memory);
-struct data* head = 0;
-for(int i=0;i<num_structs;i++){
+int max_num_structs = how_many_structs_can_fit_in_memory(total_memory);
+if(max_num_structs == 0){
+	return 0;
+}
+for(int i=0;i<max_num_structs;i++){
 	struct data* new_node = (struct data*) malloc(sizeof(struct data));
-	new_node -> p_next = head;
-	head = new_node;
+	new_node -> p_next = list_data;
+	list_data = new_node;
+	total_allocated++;
 	}
-return num_structs;
+return total_allocated;
 
 }
 
@@ -47,15 +53,7 @@ return num_structs;
  *         NO_STRUCTS_TO_DEALLOCATE if no memory allocated
  */
 int destroy_list(){
-	data *pnew = new data;
-	data *pstart=pnew;
-	pnew = pstart;
-	while(pstart){
-		pnew = (*pstart).p_next;
-		delete pstart;
-		pstart = pnew;
-	}
-
+total_allocated = 0;
 }
 
 /**
