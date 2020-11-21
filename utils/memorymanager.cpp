@@ -11,7 +11,7 @@
 /**
  * this will hold the list of structs
  */
-struct data *list_data = 0;
+data *list_data = 0;
 int total_allocated = 0;
 /**
  * create a linked list of  structs.
@@ -42,6 +42,7 @@ int create_list(int total_memory){
 		pinter = new_data;
 		total_allocated++;
 	}
+
 	return total_allocated;
 
 }
@@ -54,25 +55,18 @@ int create_list(int total_memory){
  *         NO_STRUCTS_TO_DEALLOCATE if no memory allocated
  */
 int destroy_list(){
-	if(list_data == NULL){
+	if(!list_data){
 		return NO_STRUCTS_TO_DEALLOCATE;
 	}
-struct data *pinter = list_data;
-struct data *next = 0;
-while(!pinter){
-	next = pinter -> p_next;
-	if(next->p_next == 0){
-		delete next;
-		delete pinter;
+	data *temp = new data;
+	temp = list_data;
+	while(temp){
+		list_data=list_data->p_next;
+		delete(temp);
+		temp = list_data;
 	}
-	else{
-		pinter->p_next = next->p_next;
-		delete next;
-	}
-}
-total_allocated = 0;
-list_data = NULL;
-return SUCCESS;
+	total_allocated = 0;
+	return SUCCESS;
 }
 
 /**
